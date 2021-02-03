@@ -2,6 +2,6 @@
 
 g++ main.cpp -o main
 #make main
-./main | python random_permutation.py
+./main <&0
 
 exit 0
