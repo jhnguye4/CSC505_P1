@@ -8,17 +8,22 @@
 
 int main(int argc, const char * argv[]) {
    
-    ifstream ifs (ifile); // make filestream for input file
+   
            
-           while (ifs.good()){
-               while (getline(ifs, num)){ // one int per line
+           while(cin) { //input wil come from stdin
+               while (getline(cin, num);){ // grab cin line by line, store in num
                    
                    list<int> all_nodes;
-                   all_nodes.push_back(num);
+                   all_nodes.push_back(num); //add num to end of list
+                   
+                   
 
                }
            }
 }
     
+
+
+
 
 
