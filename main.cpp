@@ -14,7 +14,7 @@ using namespace std;
 
 
 
-list<int>::iterator partition(list<int> my_list, list<int>::iterator start, list<int>::iterator end){
+list<int>::iterator partition(list<int>& my_list, list<int>::iterator &start, list<int>::iterator& end){ // have to pass by reference
     cout << "hello from partition" << endl;
     
     list<int>::iterator _start = start;
@@ -26,18 +26,24 @@ list<int>::iterator partition(list<int> my_list, list<int>::iterator start, list
     int pivot =  ( std::rand() % ( max - min + 1 ) );
     cout << "hello pivot" << endl;
     
-    cout <<  *my_list.begin() << endl;
-    cout <<  *_start << end;
-    cout <<  *_end << endl;
+    cout << *my_list.begin() << endl;
+    cout << *_start << endl;
+
     
+   cout <<  distance(my_list.begin(),_start) << endl;
     
-    cout <<  *distance(my_list.begin(),_start) << endl;
-    cout <<  *distance(my_list.begin(),_end ) << end;
-    
-    while(distance(my_list.begin(),_start) <= distance(my_list.begin(),_end)){
+    while(distance(my_list.begin(),_start) <= distance(my_list.begin(),_end)){ // infinte loop at some point
         cout << "hello from partition while loop 1" << endl;
+        
+        
+        //this does not work, the = in <= makes it infinite
         while((distance(my_list.begin(),_start) <= distance(my_list.begin(),_end)) && (*_start < pivot)){
-            next(_start,1);
+            
+            cout << *start << endl;
+            cout << pivot << endl;
+            _start++;; // this isn't incrementing this did next();
+            cout << *start << endl;
+            
         }
         
         while((distance(my_list.begin(),_start) <= distance(my_list.begin(),_end)) && (*_end > pivot)){
@@ -59,7 +65,7 @@ list<int>::iterator partition(list<int> my_list, list<int>::iterator start, list
     
 }
 
-void quicksort(list<int> my_list, list<int>::iterator start, list<int>::iterator end){
+void quicksort(list<int>& my_list, list<int>::iterator start, list<int>::iterator end){
     
     
     list<int>::iterator begin_it = my_list.begin();
@@ -80,20 +86,27 @@ void quicksort(list<int> my_list, list<int>::iterator start, list<int>::iterator
 int main(int argc, const char * argv[]) {
    
     cout << "start main\n";
-    string numstr;
+//    string numstr;
     list<int> all_nodes;
-
-    while (getline(cin, numstr)&& numstr.length() != 0){ // grab cin line by line, store in num
-        
-        //const char *num = atoi(numstr);// C++11 convert string to int
-        
-        //C++03 and older convert string to int
-        stringstream ss(numstr);
-        int num;
-        ss >> num;
-        all_nodes.push_back(num); //add num to end of list
-    }
+//
+//    while (getline(cin, numstr)&& numstr.length() != 0){ // grab cin line by line, store in num
+//
+//        //const char *num = atoi(numstr);// C++11 convert string to int
+//
+//        //C++03 and older convert string to int
+//        stringstream ss(numstr);
+//        int num;
+//        ss >> num;
+//        all_nodes.push_back(num); //add num to end of list
+//    }
+//
     
+    
+    all_nodes.push_back(0);
+    all_nodes.push_back(1);
+    all_nodes.push_back(0);
+    all_nodes.push_back(4);
+    all_nodes.push_back(3);
     for (list<int>::iterator iter = all_nodes.begin(); iter != all_nodes.end(); ++iter){
         cout << *iter << endl; //
     }
