@@ -36,6 +36,9 @@ list<int>::iterator randomPivot(list<int> &my_list)
 list<int>::iterator partition(list<int> &my_list, list<int>::iterator &start, list<int>::iterator &end)
 { // have to pass by reference
 
+//    if (_start == _end) || start == null || end == null)
+//        return start;
+    
     list<int>::iterator _start = start;
     list<int>::iterator _end = --end;
 
@@ -56,6 +59,8 @@ list<int>::iterator partition(list<int> &my_list, list<int>::iterator &start, li
     int leftCount = 0;
     int rightCount = my_list.size() - 1;
 
+    
+    
     while (leftCount <= rightCount)
     {
         //this does not work, the = in <= makes it infinite
@@ -76,12 +81,17 @@ list<int>::iterator partition(list<int> &my_list, list<int>::iterator &start, li
             cout << "LCount" << leftCount << endl;
             cout << "RCount" << rightCount << endl;
             cout << "before swapping" << endl;
-            cout << "startb " << *_start << endl;
-            cout << "endb " << *_end << endl;
+            
+            
+           // cout << "startb " << *_start << endl;
+           // cout << "endb " << *_end << endl;
             printList(my_list);
-            swap(*_start, *_end);
-            cout << "starta " << *_start << endl;
-            cout << "enda " << *_end << endl;
+            //swap(*_start, *_end);
+            iter_swap(_start,_end);
+           // cout << "starta " << *_start << endl;
+           // cout << "enda " << *_end << endl;
+            printList(my_list);
+            
             _start++;
             _end--;
             cout << "after swapping" << endl;
