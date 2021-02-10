@@ -40,6 +40,7 @@ public class Isort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
+            list = new LinkedList<Integer>();
         }
     }
 

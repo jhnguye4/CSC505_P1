@@ -10,10 +10,12 @@ import argparse
 import sys
 import random
 
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Generates a random sequence of"
                                      + " distinct integers, one per line")
-    parser.add_argument("num_ints", help="number of integers in the output", type=int)
+    parser.add_argument(
+        "num_ints", help="number of integers in the output", type=int)
     parser.add_argument("-b", "--block_size",
                         help="size of each block: ints in a block are > those in the previous block",
                         type=int)
@@ -22,14 +24,18 @@ def parse_arguments():
                         type=int)
     args = parser.parse_args()
     return args
-                      
+
+
 """
 @return a randomly permuted list of distinct integers in the range [bottom, top-1] 
 """
+
+
 def permutation(bottom, top):
-    output_list = [ i for i in range(bottom, top) ]
+    output_list = [i for i in range(bottom, top)]
     random.shuffle(output_list)
     return output_list
+
 
 if __name__ == '__main__':
     args = parse_arguments()
