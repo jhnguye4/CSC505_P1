@@ -40,7 +40,7 @@ public class Msort {
         int count1 = 0;
         int count2 = 0;
 
-        // While loop will run when both the subarrays have not reached their sizes
+        // While loop will run when one of the counters has not reached sublist size
         while (count1 < list1.size() && count2 < list2.size()) {
             // Add element from list1 to temporary list, when pointer in first list is less
             // than pointer in second sublist.
@@ -49,7 +49,8 @@ public class Msort {
                 listTmp.add(list1.get(count1));
                 ++count1;
             } else {
-                // Element at second sublist pointer is smaller than first so add element to
+                // Element at second sublist pointer is smaller than first sublist pointer so
+                // add element to
                 // temporary list.
                 // Increment pointer in second array afterwards.
                 listTmp.add(list2.get(count2));
@@ -59,10 +60,9 @@ public class Msort {
         }
 
         // In scenario where all elements in second sublist were added and some or no
-        // elements were not added from
-        // first list, this if statement will go through rest of the elements in first
-        // sublist and append them to the
-        // temporary list.
+        // elements were not added from first list. This if statement will go through
+        // rest of the elements in first
+        // sublist and append them to the temporary list.
         if (count1 < list1.size()) {
             while (count1 < list1.size()) {
                 listTmp.add(list1.get(count1));
@@ -71,10 +71,9 @@ public class Msort {
 
         }
         // In scenario where all elements in first sublist were added and some or no
-        // elements were not added from
-        // second array, this if statement will go through rest of the elements in
-        // second sublist and append them to the
-        // temporary list.
+        // elements were not added from second list. This if statement will go through
+        // rest of the elements in
+        // second sublist and append them to the temporary list.
         if (count2 < list2.size()) {
             while (count2 < list2.size()) {
                 listTmp.add(list2.get(count2));
@@ -101,7 +100,7 @@ public class Msort {
     }
 
     // This function is used to make sublists from the global list which we declared
-    // at the top
+    // at the top.
     public LinkedList<Integer> subList(int beginList, int endList) {
         LinkedList<Integer> tmp = new LinkedList<Integer>();
 
@@ -112,8 +111,8 @@ public class Msort {
     }
 
     // Main function that will be called recursively to half our lists till lists
-    // are one element.
-    // After halving, it will merge elements back together in sorted order.
+    // are one element. After halving, it will merge elements back together in
+    // sorted order.
     public void sort(int beginList, int endList) {
         // first point to list head and list midpoint
         // next, recusivley call splitting at those pointers (each 1/2 list will be
