@@ -36,7 +36,7 @@ public class Msort {
                     }
                 }
             } else {
-                System.out.println("Invalid filename");
+                System.out.println("Invalid filename, please enter a file name that ends with input.txt");
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
