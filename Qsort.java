@@ -26,16 +26,13 @@ public class Qsort {
                         // Function that goes into input file and puts each integer per line into global
                         // list
                         process(input);
-                        System.out.println("List Before Sort: " + list);
 
                         long start = System.nanoTime();
                         sort(0, list.size() - 1);
                         long end = System.nanoTime();
                         long sortTimeInNano = end - start;
                         double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 7);
-                        System.out.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
-
-                        System.out.println("List After Sort: " + list);
+                        System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
 
                         for (int i = 0; i < list.size(); i++) {
                             output.println(list.get(i));
