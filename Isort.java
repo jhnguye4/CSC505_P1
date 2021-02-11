@@ -84,7 +84,7 @@ public class Isort {
         PrintStream output = null;
         if (filename.endsWith("input.txt")) {
             filename = filename.substring(0, filename.length() - 9);
-            filename = filename + "output.txt";
+            filename = filename + "Isort_output.txt";
 
         }
         File file = new File(filename);
