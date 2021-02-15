@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Qsort {
-    LinkedList<Integer> list = new LinkedList<Integer>();
+    MyLinkedList list = new MyLinkedList();
 
     public Qsort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -44,7 +44,7 @@ public class Qsort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new LinkedList<Integer>();
+            list = new MyLinkedList();
         }
 
     }
@@ -118,7 +118,7 @@ public class Qsort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.addFirst(lineScan.nextInt());
+                list.add(lineScan.nextInt());
             }
             lineScan.close();
         }
@@ -126,13 +126,13 @@ public class Qsort {
     }
 
     // Function that swaps values at the two indexes of the global list.
-    public void swap(int index1, int index2) {
-        int value1 = list.get(index1);
-        int value2 = list.get(index2);
-        int temp = value1;
-        list.set(index1, value2);
-        list.set(index2, temp);
-    }
+    // public void swap(int index1, int index2) {
+    // int value1 = list.get(index1);
+    // int value2 = list.get(index2);
+    // int temp = value1;
+    // list.set(index1, value2);
+    // list.set(index2, temp);
+    // }
 
     // Function that does most of the heavy lifting for this sorting algorithm. The
     // idea of partition is that it will randomly select a pivot and move all
@@ -145,7 +145,7 @@ public class Qsort {
         int pivot = list.get(pivotIndex);
 
         // Moving pivot to front
-        swap(pivotIndex, start);
+        list.swap(pivotIndex, start);
 
         // Second pointer to the smaller element.
         int j = start;
@@ -155,7 +155,7 @@ public class Qsort {
             // Then moves pointer j forward.
             if (list.get(i) < pivot) {
                 j++;
-                swap(i, j);
+                list.swap(i, j);
             }
         }
         // After while loop, the algorithm wants to move the pivot, which is at the
@@ -164,7 +164,7 @@ public class Qsort {
         // with this pointer, the pivot will be at the position where all elements
         // smaller than it will be to the left and all elements larger will be to the
         // right.
-        swap(j, start);
+        list.swap(j, start);
 
         // Returns the position where the pivot is located.
         return j;

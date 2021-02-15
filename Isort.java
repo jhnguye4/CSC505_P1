@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Isort {
-    LinkedList<Integer> list = new LinkedList<Integer>();
+    MyLinkedList list = new MyLinkedList();
 
     public Isort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -44,7 +44,7 @@ public class Isort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new LinkedList<Integer>();
+            list = new MyLinkedList();
         }
     }
 
@@ -117,7 +117,7 @@ public class Isort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.addFirst(lineScan.nextInt());
+                list.add(lineScan.nextInt());
             }
             lineScan.close();
         }
@@ -158,8 +158,8 @@ public class Isort {
 
             // Procedure in order to unlink insertion value and move it an x amount back.
             int tmp = list.get(i);
-            list.remove(i);
             list.add(i - count, tmp);
+            list.remove(i + 1);
             ++i;
         }
     }

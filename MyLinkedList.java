@@ -40,6 +40,10 @@ public class MyLinkedList {
 
     public void add(int index, int num) {
         if (index < size) {
+            if (index == 0) {
+                this.add(num);
+                return;
+            }
             ListNode currentNode = head;
             ListNode newNode = new ListNode(num);
             for (int i = 0; i < index - 1; i++) {
@@ -67,13 +71,60 @@ public class MyLinkedList {
         size--;
     }
 
+    public Integer get(int index) {
+        ListNode currentNode = head;
+        if (index < size) {
+            for (int i = 0; i < index; i++) {
+                currentNode = currentNode.next;
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return currentNode.data;
+    }
+
+    public void set(int index, int value) {
+        ListNode currentNode = head;
+        for (int i = 0; i < index; i++) {
+            currentNode = currentNode.next;
+        }
+        currentNode.data = value;
+    }
+
     public Integer size() {
         return size;
     }
 
+    public void swap(int index1, int index2) {
+        ListNode position1 = head;
+        ListNode position2 = head;
+        for (int i = 0; i < index1; i++) {
+            position1 = position1.next;
+        }
+        for (int i = 0; i < index2; i++) {
+            position2 = position2.next;
+        }
+        int temp = position1.data;
+        position1.data = position2.data;
+        position2.data = temp;
+    }
+
+    public void reverseList() {
+        ListNode previous = null;
+        ListNode current = head;
+
+        while (current != null) {
+            ListNode temp = current.next;
+            current.next = previous;
+            previous = current;
+            current = temp;
+        }
+        head = previous;
+    }
+
     // Method to print the LinkedList.
-    public void printList(MyLinkedList list) {
-        ListNode currentNode = list.head;
+    public void printList() {
+        ListNode currentNode = head;
 
         while (currentNode != null) {
             // Print the data at current node

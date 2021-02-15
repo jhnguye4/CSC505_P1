@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Msort {
-    LinkedList<Integer> list = new LinkedList<Integer>();
+    MyLinkedList list = new MyLinkedList();
 
     public Msort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -29,6 +29,7 @@ public class Msort {
 
                         long start = System.nanoTime();
                         sort(0, list.size());
+                        list.reverseList();
                         long end = System.nanoTime();
                         long sortTimeInNano = end - start;
                         double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 7);
@@ -44,7 +45,7 @@ public class Msort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new LinkedList<Integer>();
+            list = new MyLinkedList();
         }
 
     }
@@ -118,7 +119,7 @@ public class Msort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.addFirst(lineScan.nextInt());
+                list.add(lineScan.nextInt());
             }
             lineScan.close();
         }
@@ -127,12 +128,12 @@ public class Msort {
 
     public void merge(int beginList, int median, int endList) {
         // Creating two sublists that will be merged into one ordered list.
-        LinkedList<Integer> list1 = subList(beginList, median);
-        LinkedList<Integer> list2 = subList(median, endList);
+        MyLinkedList list1 = subList(beginList, median);
+        MyLinkedList list2 = subList(median, endList);
 
         // New Temporary list that will be used at the end of this function to
         // update the global list.
-        LinkedList<Integer> listTmp = new LinkedList<Integer>();
+        MyLinkedList listTmp = new MyLinkedList();
         int index1 = beginList;
         int index2 = median;
 
@@ -201,8 +202,8 @@ public class Msort {
 
     // This function is used to make sublists from the global list which we declared
     // at the top.
-    public LinkedList<Integer> subList(int beginList, int endList) {
-        LinkedList<Integer> tmp = new LinkedList<Integer>();
+    public MyLinkedList subList(int beginList, int endList) {
+        MyLinkedList tmp = new MyLinkedList();
 
         for (int i = beginList; i < endList; ++i) {
             tmp.add(list.get(i));
@@ -220,10 +221,10 @@ public class Msort {
         // then call merge on each of those lists
         int median = ((beginList + endList) / 2);
 
-        LinkedList<Integer> l1 = subList(beginList, median);
-        LinkedList<Integer> l2 = subList(median, endList);
+        int l1 = median - beginList;
+        int l2 = endList - median;
 
-        if (l1.size() > 0 && l2.size() > 0) {
+        if (l1 > 0 && l2 > 0) {
             sort(beginList, median);
             sort(median, endList);
             merge(beginList, median, endList);
