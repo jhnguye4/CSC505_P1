@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Isort {
-    MyLinkedList list = new MyLinkedList();
+    private ListNode head = null;
 
     public Isort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -34,8 +34,9 @@ public class Isort {
                         double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
 
-                        for (int i = 0; i < list.size(); i++) {
-                            output.println(list.get(i));
+                        while (head != null) {
+                            output.println(head.data);
+                            head = head.next;
                         }
                         output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
                     }
@@ -45,12 +46,13 @@ public class Isort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new MyLinkedList();
+            head = null;
         }
     }
 
     public static void main(String[] args) {
         new Isort();
+
     }
 
     // Returns Scanner for an input file
@@ -118,11 +120,10 @@ public class Isort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.add(lineScan.nextInt());
+                add(lineScan.nextInt());
             }
             lineScan.close();
         }
-
     }
 
     /*
@@ -137,31 +138,73 @@ public class Isort {
      * O(n^2), and is normally used for smaller data sets.
      */
     public void sort() {
-        // Declared i as 1 since we cant compare any elements before the first element.
-        int i = 1;
+        // Getting second node of list since we cant compare any elements before the
+        // first node.
+        ListNode start = head;
+        ListNode position1;
+        ListNode position2;
 
         // Going through each element of the array from the second element to the end
-        while (i < list.size()) {
+        while (start.next != null) {
+            start = start.next;
+            position1 = start;
+            position2 = position1.previous;
 
-            // Counter that will be used to see how many elements back we have to move the
-            // element at i
-            int count = 0;
-
-            // k is set to the index before i and will be decremented till it reaches the
-            // first element.
-            for (int k = i - 1; k >= 0; --k) {
-                // Count will be incremented when value at k is greater than the value we are
-                // trying to insert.
-                if (list.get(i) < list.get(k)) {
-                    ++count;
-                }
+            while (position2 != null && (position1.data < position2.data)) {
+                swap(position1, position2);
+                position1 = position2;
+                position2 = position1.previous;
             }
+        }
+    }
 
-            // Procedure in order to unlink insertion value and move it an x amount back.
-            int tmp = list.get(i);
-            list.add(i - count, tmp);
-            list.remove(i + 1);
-            ++i;
+    public void add(int num) {
+        ListNode newNode = new ListNode(num);
+        if (head == null) {
+            head = newNode;
+        } else {
+            head.previous = newNode;
+            newNode.next = head;
+            head = newNode;
+        }
+    }
+
+    public void swap(ListNode position1, ListNode position2) {
+        int temp = position1.data;
+        position1.data = position2.data;
+        position2.data = temp;
+    }
+
+    public void printList() {
+        ListNode currentNode = head;
+
+        while (currentNode != null) {
+            // Print the data at current node
+            System.out.print(currentNode.data + " ");
+
+            // Go to next node
+            currentNode = currentNode.next;
+        }
+        System.out.println();
+
+    }
+
+    private class ListNode {
+        /** public field that holds the data of the linked list */
+        public int data;
+        public ListNode next;
+        public ListNode previous;
+
+        /**
+         * Constructor method that takes in one parameter that creates a node with
+         * information but the previous and next links are null
+         * 
+         * 
+         */
+        public ListNode(int data) {
+            this.data = data;
+            this.next = null;
+            this.previous = null;
         }
     }
 }

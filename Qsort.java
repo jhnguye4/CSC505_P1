@@ -2,7 +2,8 @@ import java.util.*;
 import java.io.*;
 
 public class Qsort {
-    MyLinkedList list = new MyLinkedList();
+    private ListNode head = null;
+    private int size;
 
     public Qsort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -28,16 +29,22 @@ public class Qsort {
                         process(input);
 
                         long start = System.nanoTime();
-                        sort(0, list.size() - 1);
+                        ListNode endPosition = head;
+                        while (endPosition != null) {
+                            endPosition = endPosition.next;
+                        }
+                        sort(head, endPosition);
                         long end = System.nanoTime();
                         long sortTimeInNano = end - start;
                         double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
 
-                        for (int i = 0; i < list.size(); i++) {
-                            output.println(list.get(i));
+                        while (head != null) {
+                            output.println(head.data);
+                            head = head.next;
                         }
                         output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+
                     }
                 }
             } else {
@@ -45,7 +52,7 @@ public class Qsort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new MyLinkedList();
+            head = null;
         }
 
     }
@@ -119,69 +126,100 @@ public class Qsort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.add(lineScan.nextInt());
+                add(lineScan.nextInt());
             }
             lineScan.close();
         }
 
     }
 
-    // Function that swaps values at the two indexes of the global list.
-    // public void swap(int index1, int index2) {
-    // int value1 = list.get(index1);
-    // int value2 = list.get(index2);
-    // int temp = value1;
-    // list.set(index1, value2);
-    // list.set(index2, temp);
-    // }
-
     // Function that does most of the heavy lifting for this sorting algorithm. The
     // idea of partition is that it will randomly select a pivot and move all
     // elements that are smaller than the pivot to the left and elements greater
     // than the pivot to the right.
-    public int partition(int start, int end) {
-        // Randomizing pivot
-        Random rand = new Random();
-        int pivotIndex = rand.nextInt(end - start) + start;
-        int pivot = list.get(pivotIndex);
-
-        // Moving pivot to front
-        list.swap(pivotIndex, start);
-
-        // Second pointer to the smaller element.
-        int j = start;
-        for (int i = start + 1; i <= end; i++) {
-            // Checks if the pointer at i is less than pivot,
-            // swaps the values at pointer i and j.
-            // Then moves pointer j forward.
-            if (list.get(i) < pivot) {
-                j++;
-                list.swap(i, j);
-            }
+    public void partition(ListNode start, ListNode end) {
+        if (start == null || start.next == null || start.next == end) {
+            return;
         }
+
+        ListNode pivot = start;
+
+        ListNode i = start;
+        ListNode j = i.next;
+        while (j != end) {
+            if (j.data < pivot.data) {
+                i = i.next;
+                swap(i, j);
+            }
+            j = j.next;
+        }
+
         // After while loop, the algorithm wants to move the pivot, which is at the
         // front,
         // to the last element that the j pointer is pointing to. By swapping the pivot
         // with this pointer, the pivot will be at the position where all elements
         // smaller than it will be to the left and all elements larger will be to the
         // right.
-        list.swap(j, start);
+        swap(i, pivot);
 
-        // Returns the position where the pivot is located.
-        return j;
+        partition(start, i.next);
+        partition(i.next, end);
+
     }
 
     // Function that is recursively called inorder to break the list into smaller
     // portions so that it can be sorted.
-    public void sort(int lo, int hi) {
-        // Will only recursively call if the beginning element is at an index smaller
-        // than the last element
-        if (lo < hi) {
-            int lastPivot = partition(lo, hi);
-            sort(lo, lastPivot - 1);
-            sort(lastPivot + 1, hi);
-        }
+    public ListNode sort(ListNode lo, ListNode hi) {
+        partition(lo, hi);
+        return head;
+    }
 
+    public void add(int num) {
+        ListNode newNode = new ListNode(num);
+        if (head == null) {
+            head = newNode;
+        } else {
+            newNode.next = head;
+            head = newNode;
+        }
+        size++;
+    }
+
+    public void swap(ListNode position1, ListNode position2) {
+        int temp = position1.data;
+        position1.data = position2.data;
+        position2.data = temp;
+    }
+
+    public void printList() {
+        ListNode currentNode = head;
+
+        while (currentNode != null) {
+            // Print the data at current node
+            System.out.print(currentNode.data + " ");
+
+            // Go to next node
+            currentNode = currentNode.next;
+        }
+        System.out.println();
+
+    }
+
+    private class ListNode {
+        /** public field that holds the data of the linked list */
+        public int data;
+        public ListNode next;
+
+        /**
+         * Constructor method that takes in one parameter that creates a node with
+         * information but the previous and next links are null
+         * 
+         * 
+         */
+        public ListNode(int data) {
+            this.data = data;
+            this.next = null;
+        }
     }
 
 }
