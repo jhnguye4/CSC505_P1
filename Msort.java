@@ -32,12 +32,13 @@ public class Msort {
                         list.reverseList();
                         long end = System.nanoTime();
                         long sortTimeInNano = end - start;
-                        double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 7);
+                        double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
 
                         for (int i = 0; i < list.size(); i++) {
                             output.println(list.get(i));
                         }
+                        output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
                     }
                 }
             } else {

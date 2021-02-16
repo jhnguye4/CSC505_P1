@@ -38,6 +38,20 @@ public class MyLinkedList {
         size++;
     }
 
+    public void addEnd(int num) {
+        ListNode newNode = new ListNode(num);
+        ListNode current = head;
+        if (current == null) {
+            head = newNode;
+            return;
+        }
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+        size++;
+    }
+
     public void add(int index, int num) {
         if (index < size) {
             if (index == 0) {
