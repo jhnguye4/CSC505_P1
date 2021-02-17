@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Msort {
-    MyLinkedList list = new MyLinkedList();
+    private ListNode head = null;
 
     public Msort() {
         // Asking user to input a text file that ends with input.txt and with a single
@@ -28,17 +28,18 @@ public class Msort {
                         process(input);
 
                         long start = System.nanoTime();
-                        sort(0, list.size());
-                        list.reverseList();
+                        head = sort(head);
                         long end = System.nanoTime();
                         long sortTimeInNano = end - start;
                         double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
 
-                        for (int i = 0; i < list.size(); i++) {
-                            output.println(list.get(i));
+                        while (head != null) {
+                            output.println(head.data);
+                            head = head.next;
                         }
                         output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+
                     }
                 }
             } else {
@@ -46,7 +47,7 @@ public class Msort {
             }
             System.out.print("Enter a filename or Q to quit: ");
             filename = console.next().toLowerCase();
-            list = new MyLinkedList();
+            head = null;
         }
 
     }
@@ -120,115 +121,105 @@ public class Msort {
             String line = input.nextLine();
             Scanner lineScan = new Scanner(line);
             if (lineScan.hasNextInt()) {
-                list.add(lineScan.nextInt());
+                add(lineScan.nextInt());
             }
             lineScan.close();
         }
 
     }
 
-    public void merge(int beginList, int median, int endList) {
-        // Creating two sublists that will be merged into one ordered list.
-        MyLinkedList list1 = subList(beginList, median);
-        MyLinkedList list2 = subList(median, endList);
+    public ListNode merge(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode tmpList = dummy;
+        while (list1 != null && list2 != null) {
 
-        // New Temporary list that will be used at the end of this function to
-        // update the global list.
-        MyLinkedList listTmp = new MyLinkedList();
-        int index1 = beginList;
-        int index2 = median;
-
-        // Use counters to move pointers in the sublists
-        int count1 = 0;
-        int count2 = 0;
-
-        // While loop will run when both of the counters has not reached sublist size
-        while (count1 < list1.size() && count2 < list2.size()) {
-            // Add element from list1 to temporary list, when pointer in first list is less
-            // than pointer in second sublist.
-            // Increment pointer in first list afterwards
-            if (list1.get(count1) < list2.get(count2)) {
-                listTmp.add(list1.get(count1));
-                ++count1;
+            if (list1.data < list2.data) {
+                tmpList.next = list1;
+                list1 = list1.next;
             } else {
-                // Element at second sublist pointer is smaller than first sublist pointer so
-                // add element to
-                // temporary list.
-                // Increment pointer in second array afterwards.
-                listTmp.add(list2.get(count2));
-                ++count2;
+                tmpList.next = list2;
+                list2 = list2.next;
             }
-
+            tmpList = tmpList.next;
         }
-
-        // In scenario where all elements in second sublist were added and some or no
-        // elements were not added from first list. This if statement will go through
-        // rest of the elements in first
-        // sublist and append them to the temporary list.
-        if (count1 < list1.size()) {
-            while (count1 < list1.size()) {
-                listTmp.add(list1.get(count1));
-                count1++;
-            }
-
+        if (list1 != null) {
+            tmpList.next = list1;
         }
-        // In scenario where all elements in first sublist were added and some or no
-        // elements were not added from second list. This if statement will go through
-        // rest of the elements in
-        // second sublist and append them to the temporary list.
-        if (count2 < list2.size()) {
-            while (count2 < list2.size()) {
-                listTmp.add(list2.get(count2));
-                count2++;
-            }
+        if (list2 != null) {
+            tmpList.next = list2;
         }
+        return dummy.next;
 
-        // Index1 and index2 are the first elements in their subarrays and their values
-        // are their current position in the global list.
-        // Whichever index is lower is the starting position where we will be setting
-        // values of the temporary list into global list.
-        if (index1 < index2) {
-            for (int i = 0; i < listTmp.size(); i++) {
-                list.set(index1, listTmp.get(i));
-                index1++;
-            }
-        } else {
-            for (int i = 0; i < listTmp.size(); i++) {
-                list.set(index2, listTmp.get(i));
-                index2++;
-            }
-        }
-
-    }
-
-    // This function is used to make sublists from the global list which we declared
-    // at the top.
-    public MyLinkedList subList(int beginList, int endList) {
-        MyLinkedList tmp = new MyLinkedList();
-
-        for (int i = beginList; i < endList; ++i) {
-            tmp.add(list.get(i));
-        }
-        return tmp;
     }
 
     // Main function that will be called recursively to half our lists till lists
     // are one element. After halving, it will merge elements back together in
     // sorted order.
-    public void sort(int beginList, int endList) {
-        // first point to list head and list midpoint
-        // next, recusivley call splitting at those pointers (each 1/2 list will be
-        // split in half, again, etc ...)
-        // then call merge on each of those lists
-        int median = ((beginList + endList) / 2);
+    public ListNode sort(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
 
-        int l1 = median - beginList;
-        int l2 = endList - median;
+        ListNode mid = middle(head);
+        ListNode middleHead = mid.next;
+        mid.next = null;
+        ListNode list1 = sort(head);
+        ListNode list2 = sort(middleHead);
 
-        if (l1 > 0 && l2 > 0) {
-            sort(beginList, median);
-            sort(median, endList);
-            merge(beginList, median, endList);
+        return merge(list1, list2);
+    }
+
+    private ListNode middle(ListNode head) {
+        ListNode slow = head, fast = head.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public void add(int num) {
+        ListNode newNode = new ListNode(num);
+        if (head == null) {
+            head = newNode;
+        } else {
+            head.previous = newNode;
+            newNode.next = head;
+            head = newNode;
+        }
+    }
+
+    public void printList(ListNode begin) {
+        ListNode currentNode = begin;
+
+        while (currentNode != null) {
+            // Print the data at current node
+            System.out.print(currentNode.data + " ");
+
+            // Go to next node
+            currentNode = currentNode.next;
+        }
+        System.out.println();
+
+    }
+
+    private class ListNode {
+        /** public field that holds the data of the linked list */
+        public int data;
+        public ListNode next;
+        public ListNode previous;
+
+        /**
+         * Constructor method that takes in one parameter that creates a node with
+         * information but the previous and next links are null
+         * 
+         * 
+         */
+        public ListNode(int data) {
+            this.data = data;
+            this.next = null;
+            this.previous = null;
         }
     }
 
