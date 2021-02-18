@@ -3,6 +3,7 @@ import java.io.*;
 
 public class Qsort {
     private ListNode head = null;
+    private int numberComparisons = 0;
 
     public Qsort(String filename) {
         filename = filename.toLowerCase();
@@ -29,8 +30,11 @@ public class Qsort {
                 long sortTimeInNano = end - start;
                 double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                 System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+                System.err.println("Number of Comparisons: " + numberComparisons);
 
                 output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+                output.println("Number of Comparisons: " + numberComparisons);
+                
                 while (head != null) {
                     output.println(head.data);
                     head = head.next;
@@ -45,7 +49,7 @@ public class Qsort {
         if (args.length > 0) {
             new Qsort(args[0]);
         } else {
-            System.out.println("Please input file to be sorted at command line.");
+            System.out.println("Please add input file to be sorted at command line.");
         }
 
     }
@@ -133,6 +137,7 @@ public class Qsort {
                 i = i.next;
                 swap(i, j);
             }
+            numberComparisons++;
             j = j.next;
         }
 

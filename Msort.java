@@ -3,6 +3,7 @@ import java.io.*;
 
 public class Msort {
     private ListNode head = null;
+    private int numberComparisons = 0;
 
     public Msort(String filename) {
         filename = filename.toLowerCase();
@@ -25,8 +26,11 @@ public class Msort {
                 long sortTimeInNano = end - start;
                 double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
                 System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+                System.err.println("Number of Comparisons: " + numberComparisons);
 
                 output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+                output.println("Number of Comparisons: " + numberComparisons);
+
                 while (head != null) {
                     output.println(head.data);
                     head = head.next;
@@ -39,7 +43,7 @@ public class Msort {
         if (args.length > 0) {
             new Msort(args[0]);
         } else {
-            System.out.println("Please input file to be sorted at command line.");
+            System.out.println("Please add input file to be sorted at command line.");
         }
     }
 
@@ -120,12 +124,15 @@ public class Msort {
                 list2 = list2.next;
             }
             tmpList = tmpList.next;
+            numberComparisons++;
         }
         if (list1 != null) {
             tmpList.next = list1;
+            numberComparisons++;
         }
         if (list2 != null) {
             tmpList.next = list2;
+            numberComparisons++;
         }
         return dummy.next;
 
