@@ -4,54 +4,43 @@ import java.io.*;
 public class Isort {
     private ListNode head = null;
 
-    public Isort() {
-        // Asking user to input a text file that ends with input.txt and with a single
-        // integer on each line
-        Scanner console = new Scanner(System.in);
-        System.out.print("Enter a filename or Q to quit: ");
-        String filename = console.next().toLowerCase();
+    public Isort(String filename) {
+        filename = filename.toLowerCase();
 
         Scanner input = null;
         PrintStream output = null;
-        // Will constantly ask user for input files that end with input.txt to sort
-        // numbers. Will reprompt user for valid file or type q to quit
-        while (!(filename.equals("q"))) {
-            if (filename.endsWith("input.txt")) {
-                // Scanner for input file
-                input = getInputScanner(filename);
-                if (input != null) {
-                    // Calls function to print the sorted list into output file
-                    output = getOutputPrintStream(console, filename);
-                    if (output != null) {
-                        // Function that goes into input file and puts each integer per line into global
-                        // list
-                        process(input);
 
-                        long start = System.nanoTime();
-                        sort();
-                        long end = System.nanoTime();
-                        long sortTimeInNano = end - start;
-                        double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
-                        System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+        input = getInputScanner(filename);
+        if (input != null) {
+            // Calls function to print the sorted list into output file
+            output = getOutputPrintStream(filename);
+            if (output != null) {
+                // Function that goes into input file and puts each integer per line into global
+                // list
+                process(input);
 
-                        while (head != null) {
-                            output.println(head.data);
-                            head = head.next;
-                        }
-                        output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
-                    }
+                long start = System.nanoTime();
+                sort();
+                long end = System.nanoTime();
+                long sortTimeInNano = end - start;
+                double sortTimeIn10thSeconds = (double) sortTimeInNano / Math.pow(10, 8);
+                System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+
+                output.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
+                while (head != null) {
+                    output.println(head.data);
+                    head = head.next;
                 }
-            } else {
-                System.out.println("Invalid filename, please enter a file name that ends with input.txt");
             }
-            System.out.print("Enter a filename or Q to quit: ");
-            filename = console.next().toLowerCase();
-            head = null;
         }
     }
 
     public static void main(String[] args) {
-        new Isort();
+        if (args.length > 0) {
+            new Isort(args[0]);
+        } else {
+            System.out.println("Please input file to be sorted at command line.");
+        }
 
     }
 
@@ -87,7 +76,7 @@ public class Isort {
      * the error
      *
      */
-    public PrintStream getOutputPrintStream(Scanner console, String filename) {
+    public PrintStream getOutputPrintStream(String filename) {
         PrintStream output = null;
         if (filename.endsWith("input.txt")) {
             filename = filename.substring(0, filename.length() - 9);
@@ -96,15 +85,8 @@ public class Isort {
         }
         File file = new File(filename);
         try {
-            if (!file.exists()) {
-                output = new PrintStream(file);
-            } else {
-                System.out.print(filename + " exists - OK to overwrite(y,n)?: ");
-                String reply = console.next().toLowerCase();
-                if (reply.startsWith("y")) {
-                    output = new PrintStream(file);
-                }
-            }
+            output = new PrintStream(file);
+
         } catch (FileNotFoundException e) {
             System.out.println("File unable to be written " + e);
         }
