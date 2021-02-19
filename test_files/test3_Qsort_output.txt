@@ -1,0 +1,16 @@
+Time after sorting list in 10th of second: 9.431E-5
+Number of Comparisons: 56
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+1
+1
