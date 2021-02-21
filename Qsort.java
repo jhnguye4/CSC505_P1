@@ -6,6 +6,7 @@ public class Qsort {
     private long numberComparisons = 0;
 
     public Qsort() {
+        // Reads in values from System.in
         Scanner input = new Scanner(System.in);
         while (input.hasNext()) {
             add(input.nextInt());
@@ -22,6 +23,7 @@ public class Qsort {
         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
         System.err.println("Number of Comparisons: " + numberComparisons);
 
+        // Printing out values of list to System.out
         while (head != null) {
             System.out.println(head.data);
             head = head.next;
