@@ -6,11 +6,11 @@ public class Msort {
     private long numberComparisons = 0;
 
     public Msort() {
+        // Reads in values from System.in
         Scanner input = new Scanner(System.in);
-        while(input.hasNext()){
+        while (input.hasNext()) {
             add(input.nextInt());
         }
-
 
         long start = System.nanoTime();
         head = sort(head);
@@ -20,6 +20,7 @@ public class Msort {
         System.err.println("Time after sorting list in 10th of second: " + sortTimeIn10thSeconds);
         System.err.println("Number of Comparisons: " + numberComparisons);
 
+        // Printing out values of list to System.out
         while (head != null) {
             System.out.println(head.data);
             head = head.next;
@@ -33,18 +34,26 @@ public class Msort {
     public ListNode merge(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode(0);
         ListNode tmpList = dummy;
+        // Loop is used to point tmpList to the smallest element between the two lists
+        // until one of the lists have reached its end
         while (list1 != null && list2 != null) {
-
+            // Value in list1 is smaller than value of list two. tmpList points to value in
+            // list1 and pointer in list1 is moved forward
             if (list1.data < list2.data) {
                 tmpList.next = list1;
                 list1 = list1.next;
             } else {
+                // Value in list2 is smaller than value of list one. tmpList points to value in
+                // list1 and pointer in list1 is moved forward
                 tmpList.next = list2;
                 list2 = list2.next;
             }
+            // moves the pointer of tmpList forward
             tmpList = tmpList.next;
             numberComparisons++;
         }
+        // For odd number of nodes in list1 and list2, if list1 or list2 have not
+        // reached end then it will enter if statement to point to last element.
         if (list1 != null) {
             tmpList.next = list1;
             numberComparisons++;
@@ -61,12 +70,17 @@ public class Msort {
     // are one element. After halving, it will merge elements back together in
     // sorted order.
     public ListNode sort(ListNode head) {
+        // Checks if the node is null or there is no elements next to the single element
+        // in the list
         if (head == null || head.next == null) {
             return head;
         }
 
+        // Gets the middle element of the list
         ListNode mid = middle(head);
         ListNode middleHead = mid.next;
+        // Sets node next to middle null so that when it recursively calls it will break
+        // list into halves till there is one element
         mid.next = null;
         ListNode list1 = sort(head);
         ListNode list2 = sort(middleHead);
@@ -74,6 +88,10 @@ public class Msort {
         return merge(list1, list2);
     }
 
+    // Function that will find the middle node of list by having two pointers. With
+    // slow pointer moving one node forward for every two nodes that the fast
+    // pointer moves forward. The node that the slow node falls on is the middle
+    // node of the list.
     private ListNode middle(ListNode head) {
         ListNode slow = head, fast = head.next;
 
@@ -84,6 +102,7 @@ public class Msort {
         return slow;
     }
 
+    // Adds a number to the front of the list
     public void add(int num) {
         ListNode newNode = new ListNode(num);
         if (head == null) {
@@ -95,13 +114,13 @@ public class Msort {
         }
     }
 
+    // Helper function that would print out the list
     public void printList(ListNode begin) {
         ListNode currentNode = begin;
 
         while (currentNode != null) {
             // Print the data at current node
             System.out.print(currentNode.data + " ");
-
             // Go to next node
             currentNode = currentNode.next;
         }
