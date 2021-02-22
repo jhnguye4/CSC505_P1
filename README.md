@@ -23,3 +23,10 @@ In order to pipe values from random permutation file into sorting algorithm:
 If you do not want the sorted values to be outputed to the console:
 
 * ./random_permutation.py 1000 | ./run_short.sh insertion > /dev/null
+
+## Team Members
+
+* Jonathan Nguyen
+* Justin Kirscher
+* Aakriti Aakriti
+* Naga Suryadevara 
